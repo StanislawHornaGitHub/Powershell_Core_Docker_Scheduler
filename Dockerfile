@@ -90,7 +90,12 @@ RUN --mount=from=installer-env,target=/mnt/pwsh,source=/tmp \
             Start-Sleep -Seconds 6 ; \
           }"
 
+# Create the TaskScheduler folder
+RUN mkdir /TaskScheduler
+
+# Copy the TaskScheduler script into the container
+COPY ./TaskScheduler.ps1 ./TaskScheduler/TaskScheduler.ps1
+
 # Use PowerShell as the default shell
 # Use array to avoid Docker prepending /bin/sh -c
-COPY ./Hello.ps1 ./Hello.ps1
-CMD ["pwsh", "-File", "./Hello.ps1"]
+CMD ["pwsh", "-File", "./TaskScheduler/TaskScheduler.ps1"]
