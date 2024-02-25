@@ -16,12 +16,13 @@
 # 2 - Failed to build Docker image
 # 3 - Failed to stop old Docker container
 # 4 - Failed to remove old Docker container
+# 5 - Failed to start new Docker container
 
 ### CHANGE LOG
 # Author:   Stanislaw Horna
 # GitHub Repository:  https://github.com/StanislawHornaGitHub/HornaLAB
 # Created:  21-Jan-2024
-# Version:  1.0
+# Version:  1.1
 
 # User editable variables
 DockerContainerName="PowerShellScheduler"
@@ -41,7 +42,6 @@ CommandResult=""
 
 Main() {
     SetCorrectDirectory
-    DisableConsoleOutput
     BuildDockerContainer
     RemoveOldContainer
     RunDockerContainer
@@ -50,14 +50,15 @@ Main() {
 
 SetCorrectDirectory() {
     ScriptRootDir=$(dirname "$ScriptInvokation")
-    cd "$ScriptRootDir" || exit 1
+    cd "$ScriptRootDir" || ExitWithError 1 "Failed to change directory"
 }
 
 BuildDockerContainer() {
 
     # Build Docker image
-    docker build -t $DockerImageName .
-    CriticalErrorHandling "Docker Image Build Succeeded" "Docker Image Build Failed" 2
+    docker build -t $DockerImageName . || ExitWithError 2 "Failed to build container image"
+
+    PrintSuccess "Docker image successfully built"
 }
 
 RemoveOldContainer() {
@@ -69,12 +70,12 @@ RemoveOldContainer() {
     if [ -n "$ContainerID" ]; then
 
         # Stop container
-        CommandResult=$(docker stop "$ContainerID")
-        CriticalErrorHandling "Docker Container Stop Succeeded" "Docker Container Stop Failed" 3
+        CommandResult=$(docker stop "$ContainerID" || ExitWithError 3 "Failed to stop old container") 
 
         # Remove container
-        CommandResult=$(docker rm "$ContainerID")
-        CriticalErrorHandling "Docker Container Removal Succeeded" "Docker Container Removal Failed" 4
+        CommandResult=$(docker rm "$ContainerID" || ExitWithError 4 "Failed to remove old container")
+
+        PrintSuccess "Old container successfully removed"
     else
         echo "Container with name $DockerContainerName not found"
     fi
@@ -90,34 +91,9 @@ RunDockerContainer() {
         --restart unless-stopped \
         --name $DockerContainerName \
         -d \
-        $DockerImageName)
-    CriticalErrorHandling "Docker Container Run Succeeded" "Docker Container Run Failed" 5
+        $DockerImageName || ExitWithError 5 "Failed to start new container")
 
-}
-
-CriticalErrorHandling() {
-    SuccessMessage=$1
-    ErrorMessage=$2
-    ExitCode=$3
-
-    # Check if command error output is empty
-    if [ $? -eq 0 ]; then
-
-        # Print result of the command if debug is enabled and command output is not empty
-        if [ "$DEBUG" = "true" ] && [ -n "$CommandResult" ]; then
-            echo "$CommandResult"
-        fi
-        PrintSuccess "$SuccessMessage"
-    else
-        PrintError "$ErrorMessage"
-
-        # Print result of the command if is not empty
-        if [ -n "$CommandResult" ]; then
-            echo "$CommandResult"
-        fi
-        exit "$ExitCode"
-    fi
-    CommandResult=""
+    PrintSuccess "New container successfully started"
 }
 
 PrintError() {
@@ -126,14 +102,8 @@ PrintError() {
     # If message is not empty print error message
     if [ -n "$Message" ]; then
 
-        # Enable Console output temporarily
-        EnableConsoleOutput
-
         # Print error message with Error word in red
         echo "${RED} Error: ${RESET}$Message"
-
-        # Disable Console output
-        DisableConsoleOutput
     fi
 }
 
@@ -143,32 +113,17 @@ PrintSuccess() {
     # If message is not empty print success message
     if [ -n "$Message" ]; then
 
-        # Enable Console output temporarily
-        EnableConsoleOutput
-
         # Print success message with Success word in green
-        echo "${GREEN} Success: ${RESET}$Message "
-
-        # Disable Console output
-        DisableConsoleOutput
+        echo "${GREEN} Success: ${RESET}$Message"
     fi
 }
 
-DisableConsoleOutput() {
+ExitWithError(){
+    ExitCode=$1
+    ErrorMessage=$2
 
-    # Redirect all output to /dev/null if debug is not enabled
-    if [ ! "$DEBUG" = "true" ]; then
-        exec 3>&2
-        exec 2>/dev/null
-    fi
-}
-
-EnableConsoleOutput() {
-
-    # Restore output to terminal if debug is not enabled
-    if [ ! "$DEBUG" = "true" ]; then
-        exec 2>&3
-    fi
+    PrintError "$ErrorMessage"
+    exit $ExitCode
 }
 
 Main

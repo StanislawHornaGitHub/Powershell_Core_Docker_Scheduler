@@ -1,0 +1,10 @@
+{
+    "GitHub_Statistics": {
+        "Enabled": "True",
+        "RerunPeriodInSeconds": 60,
+        "PythonDependencies":[
+            "requests",
+            "matplotlib"
+        ]
+    }
+}

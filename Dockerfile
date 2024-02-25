@@ -90,12 +90,26 @@ RUN --mount=from=installer-env,target=/mnt/pwsh,source=/tmp \
             Start-Sleep -Seconds 6 ; \
           }"
 
-# Create the TaskScheduler folder
-RUN mkdir /TaskScheduler
+ENV SCHEDULER_DIR=/Docker_Scheduler/TaskScheduler
+ENV SCHEDULER_MODULES_DIR=/Docker_Scheduler/TaskScheduler/Modules
+
+# Update repositories
+RUN apt-get update -y
+# Install Python
+RUN apt-get install -y python3 python3-pip
+# Install git
+RUN apt-get install -y git
+
+
+# Create folder structure
+RUN mkdir /Docker_Scheduler
+RUN mkdir /Docker_Scheduler/TaskScheduler
+RUN mkdir /Docker_Scheduler/Jobs
 
 # Copy the TaskScheduler script into the container
-COPY ./TaskScheduler.ps1 ./TaskScheduler/TaskScheduler.ps1
+COPY ./TaskScheduler/. /Docker_Scheduler/TaskScheduler/.
+COPY ./Jobs/. /Docker_Scheduler/Jobs/.
 
 # Use PowerShell as the default shell
 # Use array to avoid Docker prepending /bin/sh -c
-CMD ["pwsh", "-File", "./TaskScheduler/TaskScheduler.ps1"]
+CMD ["pwsh", "-File", "/Docker_Scheduler/TaskScheduler/TaskScheduler.ps1"]
