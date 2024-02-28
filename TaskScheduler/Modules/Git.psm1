@@ -31,12 +31,12 @@ function Invoke-GitConfiguration {
         Out-Log -Message "Git user name is not available, skipping Git Configuration" -Type "warning" -Invocation $MyInvocation
         return
     }
-    
-    git config --global user.email "$($Global:INSTANCE_CONFIG.Git.GitUserEmail)"
 
-    git config --global user.name "$Name  (stanislawhorna@outlook.com)"
+    git config --global user.email "$Email"
 
-    Out-Log -Message "Git utility tool configured" -Type "warning" -Invocation $MyInvocation
+    git config --global user.name "$Name"
+
+    Out-Log -Message "Git utility tool configured" -Type "info" -Invocation $MyInvocation
 }
 
 Out-Log -Message "Module Imported" -Type "info" -Invocation $MyInvocation

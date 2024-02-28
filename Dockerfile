@@ -90,8 +90,7 @@ RUN --mount=from=installer-env,target=/mnt/pwsh,source=/tmp \
             Start-Sleep -Seconds 6 ; \
           }"
 
-ENV SCHEDULER_DIR=/Docker_Scheduler/TaskScheduler
-ENV SCHEDULER_MODULES_DIR=/Docker_Scheduler/TaskScheduler/Modules
+ENV SCHEDULER_DIR=/TaskScheduler
 
 # Update repositories
 RUN apt-get update -y
@@ -99,7 +98,6 @@ RUN apt-get update -y
 RUN apt-get install -y python3 python3-pip
 # Install git
 RUN apt-get install -y git
-
 
 # Create folder structure
 RUN mkdir /TaskScheduler

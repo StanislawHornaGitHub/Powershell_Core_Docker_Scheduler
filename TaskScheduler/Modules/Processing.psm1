@@ -119,6 +119,7 @@ function Remove-TaskJob {
     }
     # log message and remove job
     Out-Log -Message "Removing $($task.Name) with status: $JobStatus. Processing time: $ProcessingTime" -Type $LogType -Invocation $MyInvocation
+    Receive-Job -Job $task
     $task | Remove-Job -Force
 }
 
