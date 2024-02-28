@@ -102,14 +102,13 @@ RUN apt-get install -y git
 
 
 # Create folder structure
-RUN mkdir /Docker_Scheduler
-RUN mkdir /Docker_Scheduler/TaskScheduler
-RUN mkdir /Docker_Scheduler/Jobs
+RUN mkdir /TaskScheduler
+RUN mkdir /TaskScheduler/Jobs
 
 # Copy the TaskScheduler script into the container
-COPY ./TaskScheduler/. /Docker_Scheduler/TaskScheduler/.
-COPY ./Jobs/. /Docker_Scheduler/Jobs/.
+COPY ./TaskScheduler/. /TaskScheduler/.
+COPY ./Jobs/. /TaskScheduler/Jobs/.
 
 # Use PowerShell as the default shell
 # Use array to avoid Docker prepending /bin/sh -c
-CMD ["pwsh", "-File", "/Docker_Scheduler/TaskScheduler/TaskScheduler.ps1"]
+CMD ["pwsh", "-File", "/TaskScheduler/TaskScheduler.ps1"]

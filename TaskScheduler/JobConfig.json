@@ -1,29 +1,39 @@
 {
-    "Job1": {
+    "TestJob1": {
         "Enabled": "True",
         "DelayedStart": "False",
-        "RerunPeriodInSeconds": 60,
+        "RerunPeriodInSeconds": 5,
         "ExecutableToRun": "Get-J1.ps1",
         "PythonDependencies":[
             "requests",
             "matplotlib"
         ]
     },
-    "Job2": {
+    "TestJob2": {
         "Enabled": "True",
         "DelayedStart": "False",
-        "RerunPeriodInSeconds": 120,
+        "RerunPeriodInSeconds": 10,
         "ExecutableToRun": "Get-J2.ps1",
         "PythonDependencies":[
             "requests",
             "matplotlib"
         ]
     },
-    "Job3": {
+    "TestJob3": {
         "Enabled": "True",
         "DelayedStart": "True",
-        "RerunPeriodInSeconds": 180,
+        "RerunPeriodInSeconds": 15,
         "ExecutableToRun": "Get-J3.ps1",
+        "PythonDependencies":[
+            "requests",
+            "matplotlib"
+        ]
+    },
+    "TestJob4": {
+        "Enabled": "True",
+        "DelayedStart": "True",
+        "RerunPeriodInSeconds": 20,
+        "ExecutableToRun": "Get-J4.ps1",
         "PythonDependencies":[
             "requests",
             "matplotlib"

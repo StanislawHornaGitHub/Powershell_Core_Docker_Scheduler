@@ -2,3 +2,5 @@
 /Jobs/*
 !/Jobs/*.md
 test.*
+TaskScheduler/Logs/*
+TaskScheduler/Jobs/*

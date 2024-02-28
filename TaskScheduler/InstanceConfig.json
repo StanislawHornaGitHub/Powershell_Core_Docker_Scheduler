@@ -1,4 +1,12 @@
 {
-    "GitUserEmail": "stanislawhorna@outlook.com",
-    "GitUserName": "Docker Scheduler"
+    "Git": {
+        "GitUserEmail": "stanislawhorna@outlook.com",
+        "GitUserName": "Docker Scheduler"
+    },
+    "Performance":{
+        "TasksRunningSimultaneouslyLimit": 8
+    },
+    "Logs":{
+        "LogsHistoryInDays": 2
+    }
 }
