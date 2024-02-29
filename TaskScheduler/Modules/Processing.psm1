@@ -27,7 +27,7 @@
 
 .NOTES
 
-    Version:            1.0
+    Version:            1.1
     Author:             Stanisław Horna
     Mail:               stanislawhorna@outlook.com
     GitHub Repository:  https://github.com/StanislawHornaGitHub/Powershell_Core_Docker_Scheduler
@@ -35,6 +35,7 @@
     ChangeLog:
 
     Date            Who                     What
+    2024-02-29      Stanisław Horna         Fix on calling executable in PowerShell Job, changed to relative path
 #>
 function Start-TaskExecution {
     # Get Task name to run
@@ -73,16 +74,16 @@ function Start-TaskExecution {
         Set-Location $TaskWorkingDir
         switch ($ExecutableName.Split(".")) {
             "ps1" { 
-                pwsh $ExecutableName
+                pwsh "./$ExecutableName"
             }
             "py" {
-                python3 $ExecutableName
+                python3 "./$ExecutableName"
             }
             "sh" {
-                sh $ExecutableName
+                sh "./$ExecutableName"
             }
             Default {
-                & $ExecutableName
+                & "./$ExecutableName"
             }
         }
     }
