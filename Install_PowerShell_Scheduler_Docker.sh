@@ -1,11 +1,7 @@
 #!/bin/sh
 
 ### DESCRIPTION
-# This script will build and run Docker container running PowerShell Scheduler.
-
-
-### INPUTS
-# 1. DEBUG - optional true or false. Default: false
+# This script will build and run Docker container running Task Scheduler.
 
 ### OUTPUTS
 # Newly created Container ID
@@ -20,13 +16,13 @@
 
 ### CHANGE LOG
 # Author:   Stanislaw Horna
-# GitHub Repository:  https://github.com/StanislawHornaGitHub/HornaLAB
+# GitHub Repository:  https://github.com/StanislawHornaGitHub/Powershell_Core_Docker_Scheduler
 # Created:  21-Jan-2024
 # Version:  1.1
 
 # User editable variables
-DockerContainerName="PowerShellScheduler"
-DockerImageName="powershell_scheduler"
+DockerContainerName="TaskScheduler"
+DockerImageName="task_scheduler"
 
 # Echo colors definition
 GREEN='\033[0;32m'
@@ -35,10 +31,6 @@ RESET='\033[0m'
 
 # Script input parameters
 ScriptInvokation=$0
-DEBUG=$1
-
-# Internal variables
-CommandResult=""
 
 Main() {
     SetCorrectDirectory
@@ -70,10 +62,10 @@ RemoveOldContainer() {
     if [ -n "$ContainerID" ]; then
 
         # Stop container
-        CommandResult=$(docker stop "$ContainerID" || ExitWithError 3 "Failed to stop old container") 
+        docker stop "$ContainerID" || ExitWithError 3 "Failed to stop old container"
 
         # Remove container
-        CommandResult=$(docker rm "$ContainerID" || ExitWithError 4 "Failed to remove old container")
+        docker rm "$ContainerID" || ExitWithError 4 "Failed to remove old container"
 
         PrintSuccess "Old container successfully removed"
     else
@@ -87,11 +79,11 @@ RunDockerContainer() {
     ## --restart unless-stopped - restart container if it stops, only if it was not stopped manually
     ## --name - name of container
     ## -d - run container in background
-    CommandResult=$(docker run \
+    docker run \
         --restart unless-stopped \
         --name $DockerContainerName \
         -d \
-        $DockerImageName || ExitWithError 5 "Failed to start new container")
+        $DockerImageName || ExitWithError 5 "Failed to start new container"
 
     PrintSuccess "New container successfully started"
 }
@@ -123,7 +115,7 @@ ExitWithError(){
     ErrorMessage=$2
 
     PrintError "$ErrorMessage"
-    exit $ExitCode
+    exit "$ExitCode"
 }
 
 Main
