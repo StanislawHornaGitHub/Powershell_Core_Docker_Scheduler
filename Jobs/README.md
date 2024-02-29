@@ -19,3 +19,6 @@ directly in directory dedicated for particular task, as presented below:
       └───<Directory_for_task_3>
           └──<task_3_file_to_run>
 
+- <Directory_for_task_1> - must match <Scheduled_Task_Name> configured in [JobConfig.json](/TaskScheduler/)
+
+- <task_1_file_to_run> - must match `ExecutableToRun` for <Scheduled_Task_Name> configured in [JobConfig.json](/TaskScheduler/)
