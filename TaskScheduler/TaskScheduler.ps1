@@ -11,7 +11,7 @@
 
 .NOTES
 
-    Version:            1.0
+    Version:            1.1
     Author:             Stanisław Horna
     Mail:               stanislawhorna@outlook.com
     GitHub Repository:  https://github.com/StanislawHornaGitHub/Powershell_Core_Docker_Scheduler
@@ -19,6 +19,8 @@
     ChangeLog:
 
     Date            Who                     What
+    2024-02-29      Stanisław Horna         Invoke-MainLoopSleep moved to the beggining of the loop,
+                                                to have param "DelayedStart" working.
 #>
 
 ############################# BLOCK FOR RUNNING TaskScheduler.ps1 OUTSIDE DOCKER CONTAINER #############################
@@ -56,6 +58,8 @@ function Invoke-Main {
 function Invoke-MainLoop {
     Out-Log -Message "Starting Main While Loop" -Type "info" -Invocation $MyInvocation
     while ($true) {
+        Invoke-MainLoopSleep
+
         Wait-TaskLimit
         
         Start-TaskExecution
@@ -64,8 +68,6 @@ function Invoke-MainLoop {
         Invoke-LogsCleanup
 
         Remove-CompletedTask
-        
-        Invoke-MainLoopSleep
     }
 }
 
