@@ -3,7 +3,7 @@ All `.psm1` PowerShell modules defined in this directory are mandatory for `Task
 They provides all required functionality, when `TaskScheduler.ps1` represents basic logic only.
 
 # Brief modules description
-## [`Configutation.psm1`](/TaskScheduler/Modules/Configuration.psm1)
+## [`Configuration.psm1`](/TaskScheduler/Modules/Configuration.psm1)
     Defines functions needed to correclty read and init configuration.
 
     Functions:
