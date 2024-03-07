@@ -72,7 +72,7 @@ function Start-TaskExecution {
             $ExecutableName
         )
         Set-Location $TaskWorkingDir
-        switch ($ExecutableName.Split(".")) {
+        switch ($ExecutableName.Split(".")[1]) {
             "ps1" { 
                 pwsh "./$ExecutableName"
             }
