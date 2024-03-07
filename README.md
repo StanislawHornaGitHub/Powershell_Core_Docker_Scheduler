@@ -1,5 +1,5 @@
 # Docker Task Scheduler
-Docker container to schedule and run tasks at defined times.
+Docker container to schedule and run configured tasks.
 Tool allows to schedule particular script to be executed in specified time intervals.
 
 Supported tasks languages:
